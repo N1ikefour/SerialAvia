@@ -139,6 +139,20 @@ lots of empty dark space, very subtle and low contrast, no text, no watermarks
 
 ---
 
+## 📸 ФОТО №12 — блок «О компании»
+
+**Файл:** `assets/about.jpg` · **3:4 или 1:1**
+
+```
+Stylish travel planning flat lay on dark wooden desk: passport with boarding
+passes, vintage compass, small globe, sunglasses, camera and a handwritten
+travel journal, warm golden ambient light, cozy premium atmosphere, dark
+cinematic color grade, professional photography, top-down view, no people,
+no text, no watermarks
+```
+
+---
+
 ## Чек-лист файлов
 
 | # | Файл | Тип | Формат |
@@ -154,6 +168,7 @@ lots of empty dark space, very subtle and low contrast, no text, no watermarks
 | 9 | `assets/dest-russia.jpg` | фото | 16:9 |
 | 10 | `assets/cta.mp4` | видео | 16:9 |
 | 11 | `assets/services-bg.jpg` | фото | 21:9 |
+| 12 | `assets/about.jpg` | фото | 3:4 |
 
 ---
 

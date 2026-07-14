@@ -366,6 +366,8 @@ section[id]{scroll-margin-top:84px}
   .f-grid{grid-template-columns:1fr 1fr;gap:28px}
   .f-brand{grid-column:1/-1}
   .marquee{padding:16px 0}
+  #about .container{grid-template-columns:1fr !important;gap:28px !important}
+  #about .container>div:first-child{min-height:260px !important}
   .brand small{display:none}
   .brand{font-size:16px}
 }
@@ -398,6 +400,7 @@ section[id]{scroll-margin-top:84px}
       <a href="#hot">Горящие туры</a>
       <a href="#services">Услуги</a>
       <a href="#dest">Страны</a>
+      <a href="#about">О компании</a>
       <a href="#reviews">Отзывы</a>
       <a href="#contacts">Контакты</a>
     </nav>
@@ -414,6 +417,7 @@ section[id]{scroll-margin-top:84px}
   <a href="#hot">Горящие туры</a>
   <a href="#services">Услуги</a>
   <a href="#dest">Страны</a>
+  <a href="#about">О компании</a>
   <a href="#reviews">Отзывы</a>
   <a href="#contacts">Контакты</a>
   <a href="tel:83437045544" class="mm-phone">+7 (343) 704-55-44</a>
@@ -549,6 +553,28 @@ section[id]{scroll-margin-top:84px}
       <div class="svc reveal"><div class="ic">🏨</div><h3>Бронирование отелей</h3><p>Отели по всему миру по выгодным ценам</p></div>
       <div class="svc reveal"><div class="ic">🚢</div><h3>Круизы</h3><p>Морские и речные круизы по лучшим маршрутам</p></div>
       <div class="svc reveal"><div class="ic">🏔</div><h3>Туры по России</h3><p>От Калининграда до Камчатки — вся страна</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= О КОМПАНИИ ================= -->
+<section class="section" id="about">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:center">
+    <div class="reveal" style="border-radius:var(--r);overflow:hidden;border:1px solid var(--glass-brd);min-height:380px;position:relative">
+      <div style="position:absolute;inset:0;background:linear-gradient(150deg,#1b2438,#0e1422)"></div>
+      <!-- HIGGSFIELD: фото №12 → assets/about.jpg -->
+      <img loading="lazy" src="assets/about.jpg" alt="Турагентство Serial Avia в Новоуральске" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    </div>
+    <div class="reveal">
+      <div class="sec-tag">О компании</div>
+      <h2 class="sec-title">Ваше турагентство <span class="grad-text">в Новоуральске</span></h2>
+      <p style="color:#c3c9d6;margin-bottom:18px">Serial Avia — туристическая компания из Новоуральска. Мы подбираем путешествия под ваш бюджет и формат отдыха: онлайн-поиск сравнивает предложения 80 туроператоров, а живой менеджер доводит всё до идеала — отель, перелёт, страховка, виза.</p>
+      <p style="color:#c3c9d6;margin-bottom:28px">Работаем официально, по договору. Подбор тура — бесплатно: приходите в офис на Заречной, 6 или оставьте заявку на сайте — перезвоним и предложим варианты.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <span class="hbadge">📄 Официальный договор</span>
+        <span class="hbadge">💳 Оплата картой</span>
+        <span class="hbadge">🏢 Офис в Новоуральске</span>
+      </div>
     </div>
   </div>
 </section>
