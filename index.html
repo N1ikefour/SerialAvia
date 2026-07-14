@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serial Avia — Подбор тура | Все путешествия на одном сайте</title>
+<meta name="description" content="Онлайн-поиск туров по 80 туроператорам. Горящие туры, авиабилеты, визы, круизы. Serial Avia, Новоуральск.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d14;
+  --bg2:#0f1420;
+  --bg3:#141b2b;
+  --glass:rgba(255,255,255,.045);
+  --glass-brd:rgba(255,255,255,.09);
+  --gold:#e8c268;
+  --gold2:#c9a44a;
+  --gold-grad:linear-gradient(120deg,#f3d98b 0%,#e8c268 40%,#b98a2e 100%);
+  --txt:#eef1f7;
+  --muted:#8b93a7;
+  --r:22px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:'Manrope',sans-serif;font-size:17px;line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.brand{font-family:'Unbounded',sans-serif;font-weight:500;line-height:1.15}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:#111}
+.container{width:min(1240px,92%);margin:0 auto}
+.section{padding:110px 0;position:relative}
+.sec-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:18px;font-weight:700;
+}
+.sec-tag::before{content:'';width:34px;height:1px;background:var(--gold)}
+.sec-title{font-size:clamp(28px,4vw,46px);margin-bottom:16px}
+.sec-sub{color:var(--muted);max-width:560px;font-size:17px}
+.grad-text{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- decorative glows ---------- */
+.glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.16;pointer-events:none}
+.glow.g1{width:520px;height:520px;background:#e8c268;top:-160px;right:-120px}
+.glow.g2{width:480px;height:480px;background:#3b6fd4;bottom:-180px;left:-140px;opacity:.12}
+
+/* ---------- header ---------- */
+.topbar{
+  position:fixed;inset:0 0 auto 0;z-index:100;
+  transition:all .45s var(--ease);
+  padding:22px 0;
+}
+.topbar.scrolled{
+  padding:10px 0;
+  background:rgba(10,13,20,.72);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--glass-brd);
+}
+.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;font-size:19px;letter-spacing:.04em}
+.brand .logo-ic{
+  width:42px;height:42px;border-radius:12px;background:var(--gold-grad);
+  display:grid;place-items:center;color:#181206;font-size:20px;
+  box-shadow:0 6px 24px rgba(232,194,104,.35);
+}
+.brand small{display:block;font-family:'Manrope';font-size:10.5px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase}
+nav.mainnav{display:flex;gap:6px}
+nav.mainnav a{
+  padding:9px 15px;border-radius:99px;font-size:14.5px;font-weight:600;color:#c6ccd9;
+  transition:.25s;
+}
+nav.mainnav a:hover,nav.mainnav a.active{color:#fff;background:var(--glass)}
+.top-cta{display:flex;align-items:center;gap:16px}
+.phone-link{font-weight:800;font-size:15.5px;letter-spacing:.02em}
+.phone-link span{display:block;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.12em;text-transform:uppercase}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;justify-content:center;
+  padding:14px 28px;border-radius:99px;font-weight:800;font-size:15px;
+  border:none;cursor:pointer;font-family:'Manrope';
+  transition:transform .3s var(--ease), box-shadow .3s;
+  white-space:nowrap;
+}
+.btn-gold{background:var(--gold-grad);color:#181206;box-shadow:0 10px 30px rgba(232,194,104,.28)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(232,194,104,.4)}
+.btn-ghost{background:var(--glass);color:#fff;border:1px solid var(--glass-brd);backdrop-filter:blur(8px)}
+.btn-ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-3px)}
+.burger{display:none;width:44px;height:44px;border-radius:12px;background:var(--glass);border:1px solid var(--glass-brd);cursor:pointer;place-items:center;flex-direction:column;gap:5px}
+.burger span{width:18px;height:2px;background:#fff;display:block;transition:.3s}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;padding:150px 0 70px}
+.hero-media{position:absolute;inset:0;z-index:-2}
+.hero-media video,.hero-media .hero-fallback{
+  width:100%;height:100%;object-fit:cover;position:absolute;inset:0;
+  transform:scale(1.06);
+}
+.hero-fallback{background:
+  radial-gradient(1000px 600px at 75% 20%, rgba(232,194,104,.16), transparent 60%),
+  radial-gradient(800px 600px at 15% 85%, rgba(59,111,212,.2), transparent 60%),
+  linear-gradient(160deg,#0d1322 0%,#0a0d14 70%)}
+.hero-media::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,13,20,.55) 0%,rgba(10,13,20,.25) 45%,rgba(10,13,20,.94) 100%);
+}
+.hero h1{font-size:clamp(34px,5.6vw,68px);font-weight:600;max-width:900px;margin-bottom:22px}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line>span{display:inline-block;transform:translateY(110%)}
+.hero-sub{font-size:clamp(16px,1.6vw,20px);color:#c9d0de;max-width:520px;margin-bottom:38px;opacity:0}
+.hero-badges{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px;opacity:0}
+.hbadge{
+  display:inline-flex;gap:9px;align-items:center;padding:9px 18px;border-radius:99px;
+  background:var(--glass);border:1px solid var(--glass-brd);backdrop-filter:blur(10px);
+  font-size:13.5px;font-weight:700;color:#dfe4ee;
+}
+.hbadge b{color:var(--gold)}
+
+/* search card */
+.search-card{
+  background:rgba(15,20,32,.68);
+  border:1px solid var(--glass-brd);
+  border-radius:26px;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(40px);
+}
+.search-card .sc-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.search-card .sc-head h3{font-size:17px;font-weight:500}
+.search-card .sc-head p{font-size:13px;color:var(--muted)}
+.tv-slot{min-height:120px;position:relative}
+.tv-placeholder{
+  border:1.5px dashed rgba(232,194,104,.4);border-radius:16px;padding:26px;
+  display:grid;grid-template-columns:repeat(4,1fr) auto;gap:12px;align-items:end;
+}
+.tv-placeholder .fld{background:rgba(255,255,255,.05);border:1px solid var(--glass-brd);border-radius:13px;padding:11px 16px}
+.tv-placeholder .fld label{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px}
+.tv-placeholder .fld div{font-weight:700;font-size:15px}
+.tv-note{grid-column:1/-1;font-size:13px;color:var(--gold);opacity:.85;margin-top:4px}
+.scroll-hint{
+  position:absolute;left:50%;bottom:26px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:11px;letter-spacing:.25em;text-transform:uppercase;
+}
+.scroll-hint .wheel{width:22px;height:36px;border:1.5px solid var(--muted);border-radius:12px;position:relative}
+.scroll-hint .wheel::after{content:'';position:absolute;left:50%;top:7px;width:3px;height:7px;background:var(--gold);border-radius:3px;transform:translateX(-50%);animation:wheel 1.8s infinite}
+@keyframes wheel{0%{opacity:1;top:7px}70%{opacity:0;top:18px}100%{opacity:0}}
+
+/* ---------- marquee ---------- */
+.marquee{border-block:1px solid var(--glass-brd);padding:22px 0;overflow:hidden;background:var(--bg2)}
+.marquee-track{display:flex;gap:56px;width:max-content;animation:mq 38s linear infinite}
+.marquee-track span{font-family:'Unbounded';font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:#3d465c;display:flex;align-items:center;gap:56px;white-space:nowrap}
+.marquee-track span i{font-style:normal;color:var(--gold);font-size:10px}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:-70px;position:relative;z-index:5}
+.stat{
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--glass-brd);border-radius:var(--r);padding:28px 26px;
+  backdrop-filter:blur(14px);
+}
+.stat b{font-family:'Unbounded';font-size:clamp(26px,3vw,38px);display:block;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{color:var(--muted);font-size:14px;font-weight:600}
+
+/* ---------- hot tours ---------- */
+.hot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px}
+.hot-card{
+  position:relative;border-radius:var(--r);overflow:hidden;min-height:420px;
+  display:flex;align-items:flex-end;cursor:pointer;isolation:isolate;
+  border:1px solid var(--glass-brd);
+}
+.hot-card img,.hot-card .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .9s var(--ease)}
+.hot-card:hover img,.hot-card:hover .ph{transform:scale(1.08)}
+.hot-card::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 30%,rgba(8,10,16,.92) 100%)}
+.hot-card .ph{background:linear-gradient(160deg,#1b2438,#0e1422)}
+.hot-info{padding:26px;width:100%}
+.hot-info .flag{font-size:26px}
+.hot-info h3{font-size:21px;margin:8px 0 4px}
+.hot-info p{color:#aab2c5;font-size:14px}
+.hot-meta{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.hot-price{font-family:'Unbounded';font-size:19px;color:var(--gold)}
+.hot-price small{display:block;font-family:'Manrope';font-size:11.5px;color:var(--muted);font-weight:600}
+.hot-arrow{
+  width:44px;height:44px;border-radius:50%;background:var(--glass);border:1px solid var(--glass-brd);
+  display:grid;place-items:center;transition:.35s;font-size:17px;
+}
+.hot-card:hover .hot-arrow{background:var(--gold-grad);color:#181206;transform:rotate(45deg)}
+.fire-tag{
+  position:absolute;top:18px;left:18px;padding:7px 14px;border-radius:99px;
+  background:rgba(255,82,54,.92);font-size:12px;font-weight:800;letter-spacing:.06em;
+  display:flex;gap:6px;align-items:center;
+}
+
+/* ---------- services ---------- */
+.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:46px}
+.svc{
+  background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--r);
+  padding:28px 22px;transition:.4s var(--ease);position:relative;overflow:hidden;
+}
+.svc:hover{transform:translateY(-8px);background:rgba(255,255,255,.07);border-color:rgba(232,194,104,.35)}
+.svc .ic{
+  width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:24px;
+  background:rgba(232,194,104,.12);border:1px solid rgba(232,194,104,.25);margin-bottom:40px;
+  transition:.4s;
+}
+.svc:hover .ic{background:var(--gold-grad);color:#181206;transform:rotate(-8deg) scale(1.05)}
+.svc h3{font-size:16.5px;margin-bottom:8px}
+.svc p{font-size:13.5px;color:var(--muted)}
+
+.svc-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.svc-bg img{width:100%;height:100%;object-fit:cover;opacity:.22}
+.svc-bg::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 45%,transparent 0%,var(--bg2) 78%)}
+#services .container{position:relative;z-index:1}
+
+/* ---------- destinations ---------- */
+.dest-wrap{display:grid;grid-template-columns:1.35fr 1fr 1fr;grid-auto-rows:250px;gap:18px;margin-top:46px}
+.dest{position:relative;border-radius:var(--r);overflow:hidden;isolation:isolate;border:1px solid var(--glass-brd);display:flex;align-items:flex-end;padding:24px;cursor:pointer}
+.dest:nth-child(1){grid-row:span 2}
+.dest img,.dest .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .9s var(--ease),filter .5s}
+.dest .ph{background:linear-gradient(150deg,#232f4a,#101627)}
+.dest::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 40%,rgba(8,10,16,.9))}
+.dest:hover img,.dest:hover .ph{transform:scale(1.07)}
+.dest h3{font-size:19px}
+.dest p{font-size:13px;color:#b6bdcd}
+.dest .from{position:absolute;top:16px;right:16px;background:rgba(10,13,20,.65);backdrop-filter:blur(8px);border:1px solid var(--glass-brd);padding:7px 14px;border-radius:99px;font-size:12.5px;font-weight:700;color:var(--gold)}
+
+/* ---------- request / CTA ---------- */
+.cta-sec{position:relative;overflow:hidden;border-radius:34px;padding:0;margin:110px auto;width:min(1240px,92%)}
+.cta-media{position:absolute;inset:0;z-index:-2}
+.cta-media video,.cta-media .cta-fallback{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.cta-fallback{background:radial-gradient(800px 500px at 80% 30%,rgba(232,194,104,.2),transparent 60%),linear-gradient(140deg,#131a2c,#0b0f19)}
+.cta-media::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,16,.93) 25%,rgba(8,10,16,.55) 100%)}
+.cta-in{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;padding:80px 70px;align-items:center}
+.cta-in h2{font-size:clamp(26px,3.4vw,42px);margin-bottom:16px}
+.cta-in .sec-sub{margin-bottom:0}
+.req-form{display:grid;gap:14px}
+.req-form input,.req-form select{
+  width:100%;padding:16px 20px;border-radius:15px;border:1px solid var(--glass-brd);
+  background:rgba(255,255,255,.06);color:#fff;font-family:'Manrope';font-size:15px;font-weight:600;
+  outline:none;transition:.25s;backdrop-filter:blur(6px);
+}
+.req-form input::placeholder{color:#7d8598}
+.req-form input:focus{border-color:var(--gold);background:rgba(255,255,255,.09)}
+.req-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.req-form small{color:var(--muted);font-size:12px}
+
+/* ---------- reviews ---------- */
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px}
+.rev{
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+  border:1px solid var(--glass-brd);border-radius:var(--r);padding:32px;
+  position:relative;transition:.4s var(--ease);
+}
+.rev:hover{transform:translateY(-6px);border-color:rgba(232,194,104,.3)}
+.rev .quote{font-family:'Unbounded';font-size:52px;color:var(--gold);opacity:.35;line-height:1;margin-bottom:12px}
+.rev p{color:#c3c9d6;font-size:15px;margin-bottom:26px}
+.rev-user{display:flex;gap:14px;align-items:center}
+.rev-user img,.rev-user .av{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(232,194,104,.5)}
+.rev-user .av{background:var(--gold-grad);display:grid;place-items:center;color:#181206;font-weight:800;font-size:18px}
+.rev-user b{display:block;font-size:15px}
+.rev-user .stars{color:var(--gold);font-size:12px;letter-spacing:2px}
+
+/* ---------- news ---------- */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px}
+.news{border-radius:var(--r);overflow:hidden;background:var(--glass);border:1px solid var(--glass-brd);transition:.4s var(--ease)}
+.news:hover{transform:translateY(-6px)}
+.news .nimg{height:190px;overflow:hidden}
+.news .nimg img,.news .nimg .ph{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.news .nimg .ph{background:linear-gradient(150deg,#1d2740,#0f1524)}
+.news:hover .nimg img{transform:scale(1.06)}
+.news-body{padding:24px}
+.news-body time{font-size:12px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.news-body h3{font-size:17.5px;margin:10px 0 8px}
+.news-body p{font-size:14px;color:var(--muted)}
+
+/* ---------- footer ---------- */
+footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 0 30px;margin-top:40px}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;margin-bottom:50px}
+.f-grid h4{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.f-grid a{display:block;padding:5px 0;color:#b9c0d0;font-size:14.5px;transition:.2s}
+.f-grid a:hover{color:var(--gold)}
+.f-brand p{color:var(--muted);font-size:14px;margin-top:14px;max-width:280px}
+.f-bottom{border-top:1px solid var(--glass-brd);padding-top:26px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#5d667c;font-size:13px}
+.f-bottom a{color:#8b93a7}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(46px)}
+
+/* ---------- responsive ---------- */
+@media(max-width:1080px){
+  .svc-grid{grid-template-columns:repeat(3,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .dest-wrap{grid-template-columns:1fr 1fr}
+  .dest:nth-child(1){grid-row:span 1}
+  .cta-in{grid-template-columns:1fr;padding:56px 36px}
+  nav.mainnav{display:none}
+  .burger{display:grid}
+}
+@media(max-width:760px){
+  .hot-grid,.rev-grid,.news-grid,.svc-grid{grid-template-columns:1fr}
+  .dest-wrap{grid-template-columns:1fr}
+  .tv-placeholder{grid-template-columns:1fr 1fr}
+  .top-cta .phone-link{display:none}
+  .stats{margin-top:30px}
+  .section{padding:70px 0}
+  .req-form .row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ======================================================
+  SERIAL AVIA — новый лендинг (тёмный премиум)
+  ▸ Ассеты (видео/фото из Higgsfield) кладите в папку assets/
+    рядом с этим файлом — имена файлов в HIGGSFIELD-PROMPTS.md
+  ▸ ID модуля Tourvisor: см. константу TV_MODULE_ID внизу файла
+====================================================== -->
+
+<header class="topbar" id="topbar">
+  <div class="container topbar-in">
+    <a href="#" class="brand">
+      <span class="logo-ic">✈</span>
+      <span>SERIAL AVIA<small>Туристическая компания</small></span>
+    </a>
+    <nav class="mainnav">
+      <a href="#search" class="active">Подбор тура</a>
+      <a href="#hot">Горящие туры</a>
+      <a href="#services">Услуги</a>
+      <a href="#dest">Страны</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="top-cta">
+      <a href="tel:83437045544" class="phone-link">+7 (343) 704-55-44<span>ежедневно 10:00–19:00</span></a>
+      <a href="#request" class="btn btn-gold">Подобрать тур</a>
+      <button class="burger" aria-label="меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="search">
+  <div class="hero-media">
+    <div class="hero-fallback"></div>
+    <!-- HIGGSFIELD: видео №1 → assets/hero.mp4 (постер assets/hero-poster.jpg) -->
+    <video autoplay muted loop playsinline poster="assets/hero-poster.jpg" onerror="this.remove()">
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="container">
+    <h1>
+      <span class="line"><span>Все путешествия</span></span>
+      <span class="line"><span>на <em class="grad-text" style="font-style:normal">одном сайте</em></span></span>
+    </h1>
+    <p class="hero-sub">Онлайн-поиск туров по 80 туроператорам. Найдём ваш идеальный отпуск за пару минут — честные цены, живые менеджеры.</p>
+    <div class="hero-badges">
+      <span class="hbadge"><b>80</b> туроператоров</span>
+      <span class="hbadge"><b>24/7</b> онлайн-поиск</span>
+      <span class="hbadge"><b>0 ₽</b> за подбор</span>
+    </div>
+
+    <div class="search-card" id="tv-search-card">
+      <div class="sc-head">
+        <h3>🔍 Поиск тура</h3>
+        <p>Реальные цены от туроператоров — бронируйте онлайн или по телефону</p>
+      </div>
+      <div class="tv-slot" id="tv-slot">
+        <!-- Сюда автоматически вставится модуль Tourvisor (см. скрипт внизу) -->
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="wheel"></div>листайте</div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Турция <i>◆</i> Таиланд <i>◆</i> ОАЭ <i>◆</i> Египет <i>◆</i> Мальдивы <i>◆</i> Куба <i>◆</i> Вьетнам <i>◆</i> Шри-Ланка <i>◆</i> Россия <i>◆</i> Абхазия <i>◆</i></span>
+    <span>Турция <i>◆</i> Таиланд <i>◆</i> ОАЭ <i>◆</i> Египет <i>◆</i> Мальдивы <i>◆</i> Куба <i>◆</i> Вьетнам <i>◆</i> Шри-Ланка <i>◆</i> Россия <i>◆</i> Абхазия <i>◆</i></span>
+  </div>
+</div>
+
+<!-- ================= STATS ================= -->
+<div class="container">
+  <div class="stats">
+    <div class="stat reveal"><b data-count="80">0</b><span>туроператоров в поиске</span></div>
+    <div class="stat reveal"><b data-count="1000">0</b><span>туров находится за секунды</span></div>
+    <div class="stat reveal"><b>24/7</b><span>онлайн-поиск без выходных</span></div>
+    <div class="stat reveal"><b>100%</b><span>официальные договоры</span></div>
+  </div>
+</div>
+
+<!-- ================= ГОРЯЩИЕ ТУРЫ ================= -->
+<section class="section" id="hot">
+  <div class="glow g1"></div>
+  <div class="container">
+    <div class="sec-tag reveal">Успейте забронировать</div>
+    <h2 class="sec-title reveal">Горящие <span class="grad-text">туры</span></h2>
+    <p class="sec-sub reveal">Туры по сниженным ценам от ведущих туроператоров. Обновляются каждый день.</p>
+
+    <!-- Живой модуль горящих туров Tourvisor вставится сюда, если указан ID -->
+    <div id="tv-hot-slot"></div>
+
+    <div class="hot-grid">
+      <article class="hot-card reveal">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №2 → assets/hot-turkey.jpg -->
+        <img src="assets/hot-turkey.jpg" alt="Турция" onerror="this.remove()">
+        <span class="fire-tag">🔥 −34%</span>
+        <div class="hot-info">
+          <span class="flag">🇹🇷</span>
+          <h3>Турция, Анталья</h3>
+          <p>7 ночей · всё включено · вылет из Екатеринбурга</p>
+          <div class="hot-meta">
+            <div class="hot-price">от 58 900 ₽<small>за двоих</small></div>
+            <span class="hot-arrow">→</span>
+          </div>
+        </div>
+      </article>
+      <article class="hot-card reveal">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №3 → assets/hot-egypt.jpg -->
+        <img src="assets/hot-egypt.jpg" alt="Египет" onerror="this.remove()">
+        <span class="fire-tag">🔥 −28%</span>
+        <div class="hot-info">
+          <span class="flag">🇪🇬</span>
+          <h3>Египет, Шарм-эль-Шейх</h3>
+          <p>9 ночей · всё включено · 1-я линия, риф</p>
+          <div class="hot-meta">
+            <div class="hot-price">от 74 500 ₽<small>за двоих</small></div>
+            <span class="hot-arrow">→</span>
+          </div>
+        </div>
+      </article>
+      <article class="hot-card reveal">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №4 → assets/hot-thailand.jpg -->
+        <img src="assets/hot-thailand.jpg" alt="Таиланд" onerror="this.remove()">
+        <span class="fire-tag">🔥 −22%</span>
+        <div class="hot-info">
+          <span class="flag">🇹🇭</span>
+          <h3>Таиланд, Пхукет</h3>
+          <p>10 ночей · завтраки · рядом с пляжем Ката</p>
+          <div class="hot-meta">
+            <div class="hot-price">от 112 000 ₽<small>за двоих</small></div>
+            <span class="hot-arrow">→</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <p style="margin-top:26px;text-align:center"><a class="btn btn-ghost" href="#search">Показать больше горящих туров →</a></p>
+  </div>
+</section>
+
+<!-- ================= УСЛУГИ ================= -->
+<section class="section" id="services" style="background:var(--bg2);border-block:1px solid var(--glass-brd);position:relative;overflow:hidden">
+  <div class="svc-bg">
+    <!-- HIGGSFIELD: фото №11 → assets/services-bg.jpg -->
+    <img src="assets/services-bg.jpg" alt="" onerror="this.remove()">
+  </div>
+  <div class="container">
+    <div class="sec-tag reveal">Наши услуги</div>
+    <h2 class="sec-title reveal">Больше, чем <span class="grad-text">туры</span></h2>
+    <p class="sec-sub reveal">Полный цикл организации путешествия — от билета до визы.</p>
+    <div class="svc-grid">
+      <div class="svc reveal"><div class="ic">✈️</div><h3>Авиабилеты</h3><p>По всем направлениям, регулярные и чартерные рейсы</p></div>
+      <div class="svc reveal"><div class="ic">🛂</div><h3>Визы</h3><p>Оформление виз и консультации по документам</p></div>
+      <div class="svc reveal"><div class="ic">🏨</div><h3>Бронирование отелей</h3><p>Отели по всему миру по выгодным ценам</p></div>
+      <div class="svc reveal"><div class="ic">🚢</div><h3>Круизы</h3><p>Морские и речные круизы по лучшим маршрутам</p></div>
+      <div class="svc reveal"><div class="ic">🏔</div><h3>Туры по России</h3><p>От Калининграда до Камчатки — вся страна</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= СТРАНЫ ================= -->
+<section class="section" id="dest">
+  <div class="glow g2"></div>
+  <div class="container">
+    <div class="sec-tag reveal">Направления</div>
+    <h2 class="sec-title reveal">Куда <span class="grad-text">полетим?</span></h2>
+    <p class="sec-sub reveal">Самые популярные направления у наших туристов.</p>
+    <div class="dest-wrap">
+      <a class="dest reveal" href="#search">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №5 → assets/dest-maldives.jpg -->
+        <img src="assets/dest-maldives.jpg" alt="Мальдивы" onerror="this.remove()">
+        <span class="from">от 165 000 ₽</span>
+        <div><h3>🇲🇻 Мальдивы</h3><p>Виллы над водой, снорклинг, тишина</p></div>
+      </a>
+      <a class="dest reveal" href="#search">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №6 → assets/dest-uae.jpg -->
+        <img src="assets/dest-uae.jpg" alt="ОАЭ" onerror="this.remove()">
+        <span class="from">от 89 000 ₽</span>
+        <div><h3>🇦🇪 ОАЭ</h3><p>Дубай, Абу-Даби — шопинг и небоскрёбы</p></div>
+      </a>
+      <a class="dest reveal" href="#search">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №7 → assets/dest-vietnam.jpg -->
+        <img src="assets/dest-vietnam.jpg" alt="Вьетнам" onerror="this.remove()">
+        <span class="from">от 98 000 ₽</span>
+        <div><h3>🇻🇳 Вьетнам</h3><p>Нячанг, Фукуок — экзотика и кухня</p></div>
+      </a>
+      <a class="dest reveal" href="#search">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №8 → assets/dest-srilanka.jpg -->
+        <img src="assets/dest-srilanka.jpg" alt="Шри-Ланка" onerror="this.remove()">
+        <span class="from">от 105 000 ₽</span>
+        <div><h3>🇱🇰 Шри-Ланка</h3><p>Океан, серфинг, чайные плантации</p></div>
+      </a>
+      <a class="dest reveal" href="#search">
+        <div class="ph"></div>
+        <!-- HIGGSFIELD: фото №9 → assets/dest-russia.jpg -->
+        <img src="assets/dest-russia.jpg" alt="Россия" onerror="this.remove()">
+        <span class="from">от 35 000 ₽</span>
+        <div><h3>🇷🇺 Россия</h3><p>Байкал, Алтай, Сочи, Карелия</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЗАЯВКА ================= -->
+<section class="cta-sec" id="request">
+  <div class="cta-media">
+    <div class="cta-fallback"></div>
+    <!-- HIGGSFIELD: видео №10 → assets/cta.mp4 -->
+    <video autoplay muted loop playsinline onerror="this.remove()">
+      <source src="assets/cta.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="cta-in">
+    <div class="reveal">
+      <div class="sec-tag">Персональный подбор</div>
+      <h2>Не нашли нужный тур?</h2>
+      <p class="sec-sub">Оставьте заявку — наши специалисты сами подберут для вас подходящее предложение и перезвонят в течение 15 минут в рабочее время.</p>
+    </div>
+    <form class="req-form reveal" onsubmit="event.preventDefault();this.innerHTML='<h3 style=\'font-family:Unbounded;font-weight:500\'>✅ Заявка отправлена!</h3><p style=\'color:#aab2c5;margin-top:10px\'>Мы свяжемся с вами в ближайшее время.</p>'">
+      <input type="text" placeholder="Ваше имя" required>
+      <div class="row">
+        <input type="tel" placeholder="+7 (___) ___-__-__" required>
+        <input type="text" placeholder="Куда хотите поехать?">
+      </div>
+      <button class="btn btn-gold" type="submit">Подобрать мне тур ✦</button>
+      <small>Нажимая кнопку, вы соглашаетесь с <a href="https://serialavia.ru/pod" style="color:var(--gold)">положением об обработке персональных данных</a></small>
+    </form>
+  </div>
+</section>
+
+<!-- ================= ОТЗЫВЫ ================= -->
+<section class="section" id="reviews" style="padding-top:0">
+  <div class="container">
+    <div class="sec-tag reveal">Отзывы</div>
+    <h2 class="sec-title reveal">Что говорят наши <span class="grad-text">клиенты</span></h2>
+    <div class="rev-grid">
+      <div class="rev reveal">
+        <div class="quote">“</div>
+        <p>Доверили свой отдых вашей компании и не прогадали. Отправил заявку на сайте, мне сразу перезвонили и предложили несколько отличных вариантов.</p>
+        <div class="rev-user">
+          <img src="https://serialavia.ru/images/feedbback/face_00036.jpeg" alt="" onerror="this.outerHTML='<span class=av>С</span>'">
+          <div><b>Степанов Афанасий</b><span class="stars">★★★★★</span></div>
+        </div>
+      </div>
+      <div class="rev reveal">
+        <div class="quote">“</div>
+        <p>Спасибо за отличный отдых! Менеджеры компании подобрали нам отличный отель на Пхукете. Вид из номера — просто супер.</p>
+        <div class="rev-user">
+          <img src="https://serialavia.ru/images/feedbback/face_00012.jpeg" alt="" onerror="this.outerHTML='<span class=av>П</span>'">
+          <div><b>Полина Лиханова</b><span class="stars">★★★★★</span></div>
+        </div>
+      </div>
+      <div class="rev reveal">
+        <div class="quote">“</div>
+        <p>Большое спасибо, очень хорошо отдохнули на Гоа. Солнце, море, песок, счастье. Поедем ещё!</p>
+        <div class="rev-user">
+          <img src="https://serialavia.ru/images/feedbback/face_00018.jpeg" alt="" onerror="this.outerHTML='<span class=av>А</span>'">
+          <div><b>Арман Окчелев</b><span class="stars">★★★★★</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= НОВОСТИ ================= -->
+<section class="section" id="news" style="padding-top:0">
+  <div class="container">
+    <div class="sec-tag reveal">Новости</div>
+    <h2 class="sec-title reveal">Последние <span class="grad-text">новости</span></h2>
+    <div class="news-grid">
+      <article class="news reveal">
+        <div class="nimg"><img src="https://serialavia.ru/images/headers/fon27.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
+        <div class="news-body">
+          <time>Обновление</time>
+          <h3>Новая версия сайта</h3>
+          <p>Мощная техническая начинка находит сотни туров от крупнейших туроператоров за несколько секунд.</p>
+        </div>
+      </article>
+      <article class="news reveal">
+        <div class="nimg"><img src="https://serialavia.ru/images/headers/fon28.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
+        <div class="news-body">
+          <time>Мобильная версия</time>
+          <h3>Адаптивный сайт</h3>
+          <p>Ищите туры и просматривайте горящие путёвки прямо со своего телефона или планшета.</p>
+        </div>
+      </article>
+      <article class="news reveal">
+        <div class="nimg"><img src="https://serialavia.ru/images/headers/fon29.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
+        <div class="news-body">
+          <time>Технологии</time>
+          <h3>Онлайн-поиск туров 24/7</h3>
+          <p>Туры от более чем 70 туроператоров в режиме онлайн, в любое время суток.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer id="contacts">
+  <div class="container">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a href="#" class="brand"><span class="logo-ic">✈</span><span>SERIAL AVIA<small>Туристическая компания</small></span></a>
+        <p>Все путешествия на одном сайте. Онлайн-поиск туров по 80 туроператорам.</p>
+      </div>
+      <div>
+        <h4>Навигация</h4>
+        <a href="#search">Подбор тура</a>
+        <a href="#hot">Горящие туры</a>
+        <a href="#dest">Страны</a>
+        <a href="#reviews">Отзывы</a>
+      </div>
+      <div>
+        <h4>Услуги</h4>
+        <a href="#services">Авиабилеты</a>
+        <a href="#services">Визы</a>
+        <a href="#services">Бронирование отелей</a>
+        <a href="#services">Круизы</a>
+        <a href="#services">Туры по России</a>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:83437045544" style="font-size:19px;font-weight:800;color:var(--gold)">+7 (343) 704-55-44</a>
+        <a href="#">г. Новоуральск, ул. Заречная, д. 6, офис 8</a>
+        <a href="mailto:info@serialavia.ru">info@serialavia.ru</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 Serial Avia — Туристическая компания</span>
+      <a href="https://serialavia.ru/pod">Положение об обработке персональных данных</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* =====================================================
+   TOURVISOR: впишите ID ваших модулей ниже.
+   Где взять: откройте serialavia.ru/podbor-tura → Ctrl+U
+   (исходный код) → поиск по слову "tv-moduleid" — число
+   после него и есть ID. Либо в кабинете tourvisor.ru →
+   «Модули поиска».
+===================================================== */
+const TV_SEARCH_ID = '';   // ← ID модуля поиска, например '12345'
+const TV_HOT_ID    = '';   // ← ID модуля горящих туров (необязательно)
+
+(function initTourvisor(){
+  const slot = document.getElementById('tv-slot');
+  if (TV_SEARCH_ID){
+    slot.innerHTML = '<div class="tv-search-form tv-moduleid-'+TV_SEARCH_ID+'"></div>';
+    if (TV_HOT_ID){
+      document.getElementById('tv-hot-slot').innerHTML =
+        '<div class="tv-hot tv-moduleid-'+TV_HOT_ID+'" style="margin-top:40px"></div>';
+    }
+    const s = document.createElement('script');
+    s.src = 'https://tourvisor.ru/module/init.js'; s.async = true; s.charset = 'utf-8';
+    document.body.appendChild(s);
+  } else {
+    slot.innerHTML = `
+      <div class="tv-placeholder">
+        <div class="fld"><label>Куда</label><div>Турция</div></div>
+        <div class="fld"><label>Вылет</label><div>Екатеринбург</div></div>
+        <div class="fld"><label>Даты</label><div>сент 2026</div></div>
+        <div class="fld"><label>Туристы</label><div>2 взрослых</div></div>
+        <button class="btn btn-gold" type="button">Найти туры</button>
+        <div class="tv-note">⚠️ Демо-форма. Впишите ID модуля Tourvisor в константу TV_SEARCH_ID внизу файла — и здесь заработает настоящий поиск по 80 туроператорам.</div>
+      </div>`;
+  }
+})();
+
+/* ============ АНИМАЦИИ ============ */
+gsap.registerPlugin(ScrollTrigger);
+
+/* hero intro */
+const tl = gsap.timeline({defaults:{ease:'power4.out'}});
+tl.to('.hero h1 .line>span',{y:0,duration:1.15,stagger:.14,delay:.2})
+  .to('.hero-sub',{opacity:1,y:0,duration:.9},'-=.6')
+  .to('.hero-badges',{opacity:1,duration:.8},'-=.5')
+  .to('.search-card',{opacity:1,y:0,duration:1},'-=.5');
+
+/* hero video parallax */
+gsap.to('.hero-media',{yPercent:18,ease:'none',
+  scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+/* header on scroll */
+const topbar=document.getElementById('topbar');
+addEventListener('scroll',()=>topbar.classList.toggle('scrolled',scrollY>40),{passive:true});
+
+/* reveal on scroll */
+document.querySelectorAll('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 88%'}});
+});
+
+/* counters */
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const end=+el.dataset.count;
+  ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:()=>{
+    gsap.fromTo(el,{innerText:0},{innerText:end,duration:1.8,snap:{innerText:1},ease:'power2.out',
+      onUpdate:function(){el.innerText=Math.round(this.targets()[0].innerText)+(end>=1000?'+':'')}});
+  }});
+});
+
+/* 3d tilt on cards */
+document.querySelectorAll('.hot-card,.dest').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(900px) rotateY(${x*5}deg) rotateX(${-y*5}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+/* smooth anchors highlight */
+const links=[...document.querySelectorAll('nav.mainnav a')];
+addEventListener('scroll',()=>{
+  let cur='';
+  document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-200)cur=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+},{passive:true});
+</script>
+</body>
+</html>
