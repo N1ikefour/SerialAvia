@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Serial Avia — Подбор тура | Все путешествия на одном сайте</title>
 <meta name="description" content="Онлайн-поиск туров по 80 туроператорам. Горящие туры, авиабилеты, визы, круизы. Serial Avia, Новоуральск.">
+<meta name="theme-color" content="#0a0d14">
+<meta property="og:title" content="Serial Avia — все путешествия на одном сайте">
+<meta property="og:description" content="Онлайн-поиск туров по 80 туроператорам. Подбор тура бесплатно.">
+<meta property="og:image" content="assets/hero-poster.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -294,6 +300,22 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
 /* ---------- reveal ---------- */
 .reveal{opacity:0;transform:translateY(46px)}
 
+/* ---------- mobile menu ---------- */
+section[id]{scroll-margin-top:84px}
+.mobile-menu{
+  position:fixed;inset:0;z-index:99;
+  background:rgba(10,13,20,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;
+  opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+}
+.mobile-menu.open{opacity:1;pointer-events:auto}
+.mobile-menu a{font-family:'Unbounded';font-size:21px;padding:13px;color:#dfe4ee}
+.mobile-menu a:active{color:var(--gold)}
+.mobile-menu .mm-phone{margin-top:22px;font-family:'Manrope';font-weight:800;font-size:18px;color:var(--gold)}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
 /* ---------- responsive ---------- */
 @media(max-width:1080px){
   .svc-grid{grid-template-columns:repeat(3,1fr)}
@@ -305,13 +327,34 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
   .burger{display:grid}
 }
 @media(max-width:760px){
+  body{font-size:16px}
   .hot-grid,.rev-grid,.news-grid,.svc-grid{grid-template-columns:1fr}
-  .dest-wrap{grid-template-columns:1fr}
-  .tv-placeholder{grid-template-columns:1fr 1fr}
+  .dest-wrap{grid-template-columns:1fr;grid-auto-rows:220px}
+  .tv-placeholder{grid-template-columns:1fr 1fr;padding:18px}
+  .tv-placeholder .btn{grid-column:1/-1}
   .top-cta .phone-link{display:none}
-  .stats{margin-top:30px}
+  .stats{margin-top:30px;gap:12px}
+  .stat{padding:22px 20px}
   .section{padding:70px 0}
   .req-form .row{grid-template-columns:1fr}
+  .hero{padding:110px 0 60px}
+  .search-card{padding:20px;border-radius:20px}
+  .scroll-hint{display:none}
+  .hot-card{min-height:340px}
+  .cta-sec{border-radius:24px;margin:70px auto}
+  .cta-in{padding:44px 24px;gap:32px}
+  .f-grid{grid-template-columns:1fr 1fr;gap:28px}
+  .f-brand{grid-column:1/-1}
+  .marquee{padding:16px 0}
+  .brand small{display:none}
+  .brand{font-size:16px}
+}
+@media(max-width:480px){
+  .top-cta .btn-gold{display:none}
+  .hero-badges{gap:8px}
+  .hbadge{padding:8px 13px;font-size:12.5px}
+  .hero h1{font-size:31px}
+  .f-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -345,6 +388,16 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
     </div>
   </div>
 </header>
+
+<div class="mobile-menu" id="mmenu">
+  <a href="#search">Подбор тура</a>
+  <a href="#hot">Горящие туры</a>
+  <a href="#services">Услуги</a>
+  <a href="#dest">Страны</a>
+  <a href="#reviews">Отзывы</a>
+  <a href="#contacts">Контакты</a>
+  <a href="tel:83437045544" class="mm-phone">+7 (343) 704-55-44</a>
+</div>
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="search">
@@ -413,7 +466,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
       <article class="hot-card reveal">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №2 → assets/hot-turkey.jpg -->
-        <img src="assets/hot-turkey.jpg" alt="Турция" onerror="this.remove()">
+        <img loading="lazy" src="assets/hot-turkey.jpg" alt="Турция" onerror="this.remove()">
         <span class="fire-tag">🔥 −34%</span>
         <div class="hot-info">
           <span class="flag">🇹🇷</span>
@@ -428,7 +481,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
       <article class="hot-card reveal">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №3 → assets/hot-egypt.jpg -->
-        <img src="assets/hot-egypt.jpg" alt="Египет" onerror="this.remove()">
+        <img loading="lazy" src="assets/hot-egypt.jpg" alt="Египет" onerror="this.remove()">
         <span class="fire-tag">🔥 −28%</span>
         <div class="hot-info">
           <span class="flag">🇪🇬</span>
@@ -443,7 +496,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
       <article class="hot-card reveal">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №4 → assets/hot-thailand.jpg -->
-        <img src="assets/hot-thailand.jpg" alt="Таиланд" onerror="this.remove()">
+        <img loading="lazy" src="assets/hot-thailand.jpg" alt="Таиланд" onerror="this.remove()">
         <span class="fire-tag">🔥 −22%</span>
         <div class="hot-info">
           <span class="flag">🇹🇭</span>
@@ -491,35 +544,35 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
       <a class="dest reveal" href="#search">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №5 → assets/dest-maldives.jpg -->
-        <img src="assets/dest-maldives.jpg" alt="Мальдивы" onerror="this.remove()">
+        <img loading="lazy" src="assets/dest-maldives.jpg" alt="Мальдивы" onerror="this.remove()">
         <span class="from">от 165 000 ₽</span>
         <div><h3>🇲🇻 Мальдивы</h3><p>Виллы над водой, снорклинг, тишина</p></div>
       </a>
       <a class="dest reveal" href="#search">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №6 → assets/dest-uae.jpg -->
-        <img src="assets/dest-uae.jpg" alt="ОАЭ" onerror="this.remove()">
+        <img loading="lazy" src="assets/dest-uae.jpg" alt="ОАЭ" onerror="this.remove()">
         <span class="from">от 89 000 ₽</span>
         <div><h3>🇦🇪 ОАЭ</h3><p>Дубай, Абу-Даби — шопинг и небоскрёбы</p></div>
       </a>
       <a class="dest reveal" href="#search">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №7 → assets/dest-vietnam.jpg -->
-        <img src="assets/dest-vietnam.jpg" alt="Вьетнам" onerror="this.remove()">
+        <img loading="lazy" src="assets/dest-vietnam.jpg" alt="Вьетнам" onerror="this.remove()">
         <span class="from">от 98 000 ₽</span>
         <div><h3>🇻🇳 Вьетнам</h3><p>Нячанг, Фукуок — экзотика и кухня</p></div>
       </a>
       <a class="dest reveal" href="#search">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №8 → assets/dest-srilanka.jpg -->
-        <img src="assets/dest-srilanka.jpg" alt="Шри-Ланка" onerror="this.remove()">
+        <img loading="lazy" src="assets/dest-srilanka.jpg" alt="Шри-Ланка" onerror="this.remove()">
         <span class="from">от 105 000 ₽</span>
         <div><h3>🇱🇰 Шри-Ланка</h3><p>Океан, серфинг, чайные плантации</p></div>
       </a>
       <a class="dest reveal" href="#search">
         <div class="ph"></div>
         <!-- HIGGSFIELD: фото №9 → assets/dest-russia.jpg -->
-        <img src="assets/dest-russia.jpg" alt="Россия" onerror="this.remove()">
+        <img loading="lazy" src="assets/dest-russia.jpg" alt="Россия" onerror="this.remove()">
         <span class="from">от 35 000 ₽</span>
         <div><h3>🇷🇺 Россия</h3><p>Байкал, Алтай, Сочи, Карелия</p></div>
       </a>
@@ -564,7 +617,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
         <div class="quote">“</div>
         <p>Доверили свой отдых вашей компании и не прогадали. Отправил заявку на сайте, мне сразу перезвонили и предложили несколько отличных вариантов.</p>
         <div class="rev-user">
-          <img src="https://serialavia.ru/images/feedbback/face_00036.jpeg" alt="" onerror="this.outerHTML='<span class=av>С</span>'">
+          <img loading="lazy" src="https://serialavia.ru/images/feedbback/face_00036.jpeg" alt="" onerror="this.outerHTML='<span class=av>С</span>'">
           <div><b>Степанов Афанасий</b><span class="stars">★★★★★</span></div>
         </div>
       </div>
@@ -572,7 +625,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
         <div class="quote">“</div>
         <p>Спасибо за отличный отдых! Менеджеры компании подобрали нам отличный отель на Пхукете. Вид из номера — просто супер.</p>
         <div class="rev-user">
-          <img src="https://serialavia.ru/images/feedbback/face_00012.jpeg" alt="" onerror="this.outerHTML='<span class=av>П</span>'">
+          <img loading="lazy" src="https://serialavia.ru/images/feedbback/face_00012.jpeg" alt="" onerror="this.outerHTML='<span class=av>П</span>'">
           <div><b>Полина Лиханова</b><span class="stars">★★★★★</span></div>
         </div>
       </div>
@@ -580,7 +633,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
         <div class="quote">“</div>
         <p>Большое спасибо, очень хорошо отдохнули на Гоа. Солнце, море, песок, счастье. Поедем ещё!</p>
         <div class="rev-user">
-          <img src="https://serialavia.ru/images/feedbback/face_00018.jpeg" alt="" onerror="this.outerHTML='<span class=av>А</span>'">
+          <img loading="lazy" src="https://serialavia.ru/images/feedbback/face_00018.jpeg" alt="" onerror="this.outerHTML='<span class=av>А</span>'">
           <div><b>Арман Окчелев</b><span class="stars">★★★★★</span></div>
         </div>
       </div>
@@ -595,7 +648,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
     <h2 class="sec-title reveal">Последние <span class="grad-text">новости</span></h2>
     <div class="news-grid">
       <article class="news reveal">
-        <div class="nimg"><img src="https://serialavia.ru/images/headers/fon27.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
+        <div class="nimg"><img loading="lazy" src="https://serialavia.ru/images/headers/fon27.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
         <div class="news-body">
           <time>Обновление</time>
           <h3>Новая версия сайта</h3>
@@ -603,7 +656,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
         </div>
       </article>
       <article class="news reveal">
-        <div class="nimg"><img src="https://serialavia.ru/images/headers/fon28.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
+        <div class="nimg"><img loading="lazy" src="https://serialavia.ru/images/headers/fon28.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
         <div class="news-body">
           <time>Мобильная версия</time>
           <h3>Адаптивный сайт</h3>
@@ -611,7 +664,7 @@ footer{background:var(--bg2);border-top:1px solid var(--glass-brd);padding:70px 
         </div>
       </article>
       <article class="news reveal">
-        <div class="nimg"><img src="https://serialavia.ru/images/headers/fon29.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
+        <div class="nimg"><img loading="lazy" src="https://serialavia.ru/images/headers/fon29.jpg" alt="" onerror="this.outerHTML='<div class=ph></div>'"></div>
         <div class="news-body">
           <time>Технологии</time>
           <h3>Онлайн-поиск туров 24/7</h3>
@@ -730,7 +783,19 @@ document.querySelectorAll('[data-count]').forEach(el=>{
   }});
 });
 
-/* 3d tilt on cards */
+/* mobile menu */
+const burger=document.querySelector('.burger'), mmenu=document.getElementById('mmenu');
+burger.addEventListener('click',()=>{
+  burger.classList.toggle('open');
+  mmenu.classList.toggle('open');
+  document.body.style.overflow = mmenu.classList.contains('open') ? 'hidden' : '';
+});
+mmenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  burger.classList.remove('open'); mmenu.classList.remove('open'); document.body.style.overflow='';
+}));
+
+/* 3d tilt on cards (только для устройств с мышью) */
+if(matchMedia('(hover:hover)').matches)
 document.querySelectorAll('.hot-card,.dest').forEach(card=>{
   card.addEventListener('mousemove',e=>{
     const r=card.getBoundingClientRect();
