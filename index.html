@@ -537,6 +537,16 @@ section[id]{scroll-margin-top:84px}
   </div>
 </section>
 
+<!-- ================= КАЛЕНДАРЬ ТУРОВ ================= -->
+<section class="section" id="calendar" style="padding-top:0">
+  <div class="container">
+    <div class="sec-tag reveal">Цены по датам</div>
+    <h2 class="sec-title reveal">Календарь <span class="grad-text">туров</span></h2>
+    <p class="sec-sub reveal">Минимальные цены от ведущих туроператоров по датам вылета.</p>
+    <div class="reveal" id="tv-cal-slot" style="background:#fff;border-radius:22px;padding:20px;margin-top:40px;overflow:auto"></div>
+  </div>
+</section>
+
 <!-- ================= УСЛУГИ ================= -->
 <section class="section" id="services" style="background:var(--bg2);border-block:1px solid var(--glass-brd);position:relative;overflow:hidden">
   <div class="svc-bg">
@@ -649,6 +659,7 @@ section[id]{scroll-margin-top:84px}
       </div>
       <button class="btn btn-gold" type="submit">Подобрать мне тур ✦</button>
       <small>Нажимая кнопку, вы соглашаетесь с <a href="https://serialavia.ru/pod" style="color:var(--gold)">положением об обработке персональных данных</a></small>
+      <div id="tv-free-slot" style="margin-top:6px"></div>
     </form>
   </div>
 </section>
@@ -769,30 +780,28 @@ section[id]{scroll-margin-top:84px}
    после него и есть ID. Либо в кабинете tourvisor.ru →
    «Модули поиска».
 ===================================================== */
-const TV_SEARCH_ID = '9955704';   // ID модуля поиска Tourvisor (с serialavia.ru/podbor-tura)
-const TV_HOT_ID    = '9955351';   // ID модуля горящих туров (с serialavia.ru/goryashchie-tury)
-
+/* Все модули Tourvisor сайта serialavia.ru */
+const TV_MODULES = [
+  {cls:'tv-search-form', id:'9955704', slot:'tv-slot'},       // поиск туров
+  {cls:'tv-hot-tours',   id:'9955351', slot:'tv-hot-slot'},   // горящие туры
+  {cls:'tv-calendar',    id:'9955348', slot:'tv-cal-slot'},   // календарь цен
+  {cls:'animated pulse infinite tv-free-button', id:'9949594', slot:'tv-free-slot'} // кнопка заявки (шлёт на serialavia@mail.ru)
+  // запасные ID: поиск 9955703 (главная), горящие 9955350 (главная),
+  // мин. цены 9955347 (tv-min-price), каталог стран 9955352 (tv-country)
+];
 (function initTourvisor(){
-  const slot = document.getElementById('tv-slot');
-  if (TV_SEARCH_ID){
-    slot.innerHTML = '<div class="tv-search-form tv-moduleid-'+TV_SEARCH_ID+'"></div>';
-    if (TV_HOT_ID){
-      document.getElementById('tv-hot-slot').innerHTML =
-        '<div class="tv-hot-tours tv-moduleid-'+TV_HOT_ID+'" style="margin-top:40px"></div>';
+  let any = false;
+  TV_MODULES.forEach(m=>{
+    const el = document.getElementById(m.slot);
+    if (el && m.id){
+      el.innerHTML = '<div class="'+m.cls+' tv-moduleid-'+m.id+'"></div>';
+      any = true;
     }
+  });
+  if (any){
     const s = document.createElement('script');
     s.src = 'https://tourvisor.ru/module/init.js'; s.async = true; s.charset = 'utf-8';
     document.body.appendChild(s);
-  } else {
-    slot.innerHTML = `
-      <div class="tv-placeholder">
-        <div class="fld"><label>Куда</label><div>Турция</div></div>
-        <div class="fld"><label>Вылет</label><div>Екатеринбург</div></div>
-        <div class="fld"><label>Даты</label><div>сент 2026</div></div>
-        <div class="fld"><label>Туристы</label><div>2 взрослых</div></div>
-        <button class="btn btn-gold" type="button">Найти туры</button>
-        <div class="tv-note">⚠️ Демо-форма. Впишите ID модуля Tourvisor в константу TV_SEARCH_ID внизу файла — и здесь заработает настоящий поиск по 80 туроператорам.</div>
-      </div>`;
   }
 })();
 
