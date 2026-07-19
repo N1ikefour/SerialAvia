@@ -770,7 +770,7 @@ section[id]{scroll-margin-top:84px}
    «Модули поиска».
 ===================================================== */
 const TV_SEARCH_ID = '9955704';   // ID модуля поиска Tourvisor (с serialavia.ru/podbor-tura)
-const TV_HOT_ID    = '';   // ← ID модуля горящих туров (необязательно)
+const TV_HOT_ID    = '9955351';   // ID модуля горящих туров (с serialavia.ru/goryashchie-tury)
 
 (function initTourvisor(){
   const slot = document.getElementById('tv-slot');
@@ -778,7 +778,7 @@ const TV_HOT_ID    = '';   // ← ID модуля горящих туров (н�
     slot.innerHTML = '<div class="tv-search-form tv-moduleid-'+TV_SEARCH_ID+'"></div>';
     if (TV_HOT_ID){
       document.getElementById('tv-hot-slot').innerHTML =
-        '<div class="tv-hot tv-moduleid-'+TV_HOT_ID+'" style="margin-top:40px"></div>';
+        '<div class="tv-hot-tours tv-moduleid-'+TV_HOT_ID+'" style="margin-top:40px"></div>';
     }
     const s = document.createElement('script');
     s.src = 'https://tourvisor.ru/module/init.js'; s.async = true; s.charset = 'utf-8';
