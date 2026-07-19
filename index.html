@@ -818,6 +818,26 @@ const TV_MODULES = [
     s.src = 'https://tourvisor.ru/module/init.js'; s.async = true; s.charset = 'utf-8';
     document.body.appendChild(s);
   }
+  /* Фолбэк: если модули не отрисовались (сайт не на serialavia.ru) —
+     показываем демо-форму, пустые секции прячем */
+  setTimeout(()=>{
+    const search = document.querySelector('#tv-slot .tv-search-form');
+    if (search && !search.childElementCount){
+      document.getElementById('tv-slot').innerHTML = `
+      <div class="tv-placeholder">
+        <div class="fld"><label>Куда</label><div>Турция</div></div>
+        <div class="fld"><label>Вылет</label><div>Екатеринбург</div></div>
+        <div class="fld"><label>Даты</label><div>сент 2026</div></div>
+        <div class="fld"><label>Туристы</label><div>2 взрослых</div></div>
+        <a class="btn btn-gold" href="tel:83437045544">Найти туры</a>
+        <div class="tv-note">Онлайн-поиск заработает после переезда на serialavia.ru — а пока звоните, подберём по телефону!</div>
+      </div>`;
+    }
+    const cal = document.querySelector('#tv-cal-slot .tv-calendar');
+    if (cal && !cal.childElementCount) document.getElementById('calendar').style.display='none';
+    const free = document.querySelector('#tv-free-slot .tv-free-button');
+    if (free && !free.childElementCount) document.getElementById('tv-free-slot').style.display='none';
+  }, 6000);
 })();
 
 /* ============ АНИМАЦИИ ============ */
